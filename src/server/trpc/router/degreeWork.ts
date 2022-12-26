@@ -31,5 +31,9 @@ export const degreeWorkRouter = router({
             }
         });
         return degreeWork;
-    }),     
+    }),
+    getDegreeWorks: publicProcedure.query(async ({ctx}) => {
+        const degreeWorks = await ctx.prisma.degreeWork.findMany();
+        return degreeWorks;
+    }),
 });
