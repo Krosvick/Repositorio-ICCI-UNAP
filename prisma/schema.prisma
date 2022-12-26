@@ -14,6 +14,7 @@ datasource db {
   url      = env("DATABASE_URL")
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
   relationMode = "prisma"
+  
 }
 enum Gender {
   MALE
@@ -63,13 +64,14 @@ model User {
   name          String?
   email         String?   @unique
   emailVerified DateTime?
+  image        String?
   accounts      Account[]
   sessions      Session[]
- password    String
-  role        Role         @default(USER)
-  isGraduated Boolean      @default(false)
-  birthdate   Int
-  gender      Gender       @default(NULL)
+ password    String?
+  role        Role?         @default(USER)
+  isGraduated Boolean?      @default(false)
+  birthdate   Int?
+  gender      Gender?      @default(NULL)
   degreeWorks DegreeWork[]
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @updatedAt
@@ -98,7 +100,7 @@ model DegreeWork {
   id          String         @id @default(uuid()) 
   title       String
   description String
-  file        String         @unique
+  file        Bytes        
   authors     String
   advisors    String
   author      User?           @relation(fields: [authorId], references: [id]) 
