@@ -109,7 +109,9 @@ model DegreeWork {
   confirmed   Boolean        @default(false)
   year        Int
   semester   String
-  uploadDate   DateTime       
+  CreatedAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  deletedAt   DateTime?
   tags       Tag[]
 
   @@index([authorId])
