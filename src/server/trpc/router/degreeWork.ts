@@ -1,39 +1,35 @@
-import { DegreeWorkType } from "@prisma/client";
 import {z} from "zod";
+import { degreeformSchema } from "../../../pages/degreeform";
 import { router,publicProcedure, protectedProcedure } from "../trpc";
+import { S3 } from "aws-sdk";
 
 export const degreeWorkRouter = router({
-    publish: protectedProcedure.input(z.object({
-        title: z.string(),
-        description: z.string(),
-        //type is an enum in prisma
-        type: z.enum([DegreeWorkType.THESIS, DegreeWorkType.ARTICLE]),
-        confirmed: z.boolean(),
-        authors: z.array(z.string()),
-        advisors: z.array(z.string()),
-        year: z.number(),
-        semester: z.string(),
-        file: z.any(),
-    })).mutation(async ({input,ctx}) => {
-        const {title, description, type, confirmed, authors, advisors, year, semester, file} = input;
-        const degreeWork = await ctx.prisma.degreeWork.create({
+    publish: protectedProcedure.input(degreeformSchema).mutation(async ({input,ctx}) => {
+        const {title, description, type, authors, advisors, year, file} = input;
+        S3.PresignedPost = {
+            url: "https://s3.us-east-2.amazonaws.com/degree-works",
+            fields: {
+                key: "test",
+                "Content-Type": "application/pdf",
+                acl: "public-read",
+            },
+            expires: 60,
+        };
+        const degreeWork = await ctx.prisma.degreeWorks.create({
             data: {
                 title,
                 description,
                 type,
-                confirmed,
-                //authors is going to be an array of strings, so we need to convert it into an string separated by commas
-                authors: authors.join(","),
-                advisors: advisors.join(","),
+                authors,
+                advisors,
                 year,
-                semester,
                 file,
             }
         });
         return degreeWork;
     }),
     getDegreeWorks: publicProcedure.query(async ({ctx}) => {
-        const degreeWorks = await ctx.prisma.degreeWork.findMany();
+        const degreeWorks = await ctx.prisma.degreeWorks.findMany();
         return degreeWorks;
     }),
 });
