@@ -72,7 +72,7 @@ model User {
   isGraduated Boolean?      @default(false)
   birthdate   Int?
   gender      Gender?      @default(NULL)
-  degreeWorks DegreeWork[]
+  degreeWorks DegreeWorks[]
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @updatedAt
   deletedAt  DateTime?
@@ -93,26 +93,25 @@ enum DegreeWorkType {
 model Tag {
   id    String @id @default(uuid()) 
   name  String
-  degreeWorks DegreeWork[]  
+  degreeWorks DegreeWorks[]
 }
 
-model DegreeWork {
+model DegreeWorks {
   id          String         @id @default(uuid()) 
   title       String
   description String
   file        Bytes        
   authors     String
-  advisors    String
-  author      User?           @relation(fields: [authorId], references: [id]) 
-  authorId    String?
+  advisors     String
+  publisher      User?           @relation(fields: [publisherId], references: [id]) 
+  publisherId    String?
   type        DegreeWorkType
-  confirmed   Boolean        @default(false)
+  admisionDate   DateTime?
   year        Int
-  semester   String
   CreatedAt   DateTime       @default(now())
   updatedAt   DateTime       @updatedAt
   deletedAt   DateTime?
   tags       Tag[]
 
-  @@index([authorId])
+  @@index([publisherId])
 }
