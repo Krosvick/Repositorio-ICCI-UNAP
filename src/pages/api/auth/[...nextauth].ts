@@ -18,8 +18,21 @@ import { Select } from "@chakra-ui/react";
           select: {role: true},
         }).then((user) => {
           return user?.role;
+        }),
+        session.user.institutionalEmail = await prisma.user.findUnique({
+          where: { id: user.id },
+          select: {institutionalEmail: true},
+        }).then((user) => {
+          return user?.institutionalEmail;
+        }),
+        session.user.emVerified = await prisma.user.findUnique({
+          where: { id: user.id },
+          select: {IEVerified: true},
+        }).then((user) => {
+          return user?.IEVerified;
         }
-        );
+        )
+      
       }
       return session;
     },

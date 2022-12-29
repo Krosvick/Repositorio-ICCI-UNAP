@@ -64,6 +64,8 @@ model User {
   name          String?
   email         String?   @unique
   emailVerified DateTime?
+  institutionalEmail String? @unique @default("")
+  IEVerified    Boolean?  @default(false)
   image        String?
   accounts      Account[]
   sessions      Session[]
@@ -100,7 +102,7 @@ model DegreeWorks {
   id          String         @id @default(uuid()) 
   title       String
   description String
-  file        Bytes        
+  file        String?
   authors     String
   advisors     String
   publisher      User?           @relation(fields: [publisherId], references: [id]) 

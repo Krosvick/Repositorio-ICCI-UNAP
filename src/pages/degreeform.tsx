@@ -5,7 +5,11 @@ import {z} from "zod";
 import {SubmitHandler, useForm} from "react-hook-form";
 import { DegreeWorkType } from "@prisma/client";
 import {zodResolver} from "@hookform/resolvers/zod";
-import { fileToBlob } from "../utils/filetoblob";
+import {useSession} from "next-auth/react"
+import { unstable_getServerSession } from "next-auth";
+import { authOptions } from "./api/auth/[...nextauth]";
+import { CreateNextContextOptions } from "@trpc/server/adapters/next";
+
 
 export const degreeformSchema = z.object({
         title: z.string().max(100),
@@ -23,27 +27,32 @@ type degreeformSchema = z.infer<typeof degreeformSchema>;
 
 const degreeform: NextPage = () => {
     const utils = trpc.useContext();
-    const addDegreeWork = trpc.degreeWork.publish.useMutation({
-
-    });
+    const {data: sessionData} = useSession();
+    const {mutateAsync: addDegreeWork} = trpc.degreeWork.publish.useMutation();
+    const {mutateAsync: createSignedUrl} = trpc.degreeWork.getSignedUrl.useMutation();
+    
     const {register, handleSubmit, formState:{errors}} = useForm<degreeformSchema>({
         resolver: zodResolver(degreeformSchema),
     });
     const onSubmit: SubmitHandler<degreeformSchema> = async (data) => {
-        let file = data.file[0];
-        data.file = await fileToBlob(file);
-        console.log(data.file);
-        addDegreeWork.mutateAsync(data);
-    }
-    const onFileChange = (e: React.FormEvent<HTMLInputElement>) => {
-        const file = e.currentTarget.files?.[0];
-        if (file) {
-            if (file.type !== "application/pdf") {
-                alert("Solo se permiten archivos pdf");
-                e.currentTarget.value = "";
-            }
+        const {url, fields}: {url: string, fields: any} = await createSignedUrl({fileName: data.file[0].name}) as any;
+        const datas = {
+            ...fields,
+            'Content-Type': data.file[0].type,
+            file: data.file[0],
+        };
+        const formData = new FormData();
+        for (const name in datas) {
+            formData.append(name, datas[name]);
         }
+        await fetch(url, {
+            method: 'POST',
+            body: formData,
+        });
+        data.file = url + "/" + data.file[0].name;
+        await addDegreeWork(data);
     }
+    
     return (
         //this will be a form to post a degree work in the middle of the page
         //style with tailwind
@@ -166,7 +175,6 @@ const degreeform: NextPage = () => {
                         <FileInput
                             id="file"
                             helperText="Solo se permiten archivos pdf"
-                            onChange={onFileChange}
                             {...register("file")}
                         />
                     </div>
@@ -180,3 +188,29 @@ const degreeform: NextPage = () => {
     )
 }
 export default degreeform;
+
+export async function getServerSideProps(context: CreateNextContextOptions) {
+    const session = await unstable_getServerSession(
+        context.req,
+        context.res,
+        authOptions
+    );
+    console.log(session);
+    if(!session) {
+        return {
+            redirect: {
+                destination: "/",
+                permanent: false,
+            }
+        }
+    }else if(session?.user?.emVerified === false) {
+        return {
+            redirect: {
+                destination: "/verify",
+                permanent: false,
+            }
+        }
+    }else {
+        return {props:{}};
+    }
+}
