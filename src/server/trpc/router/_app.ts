@@ -1,6 +1,6 @@
 import { router } from "../trpc";
 import { authRouter } from "./auth";
-import { degreeWorkRouter } from "./degreeWork";
+import { degreeWorkRouter } from "./degreeworks/degreeWork";
 
 export const appRouter = router({
   degreeWork: degreeWorkRouter,

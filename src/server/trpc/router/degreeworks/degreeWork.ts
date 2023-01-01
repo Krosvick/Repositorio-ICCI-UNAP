@@ -1,7 +1,7 @@
 import {z} from "zod";
-import { degreeformSchema } from "../../../pages/degreeform";
-import { router,publicProcedure, protectedProcedure } from "../trpc";
-import {AWS} from "../../../libs/aws";
+import { degreeformSchema } from "../../../../pages/degreeform";
+import { router,publicProcedure, protectedProcedure } from "../../trpc";
+import {AWS} from "../../../../libs/aws";
 
 const s3 = new AWS.S3();
 
