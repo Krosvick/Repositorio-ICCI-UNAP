@@ -66,10 +66,11 @@ model User {
   emailVerified DateTime?
   institutionalEmail String? @unique @default("")
   IEVerified    Boolean?  @default(false)
+  hashedId     String?   @default("")
   image        String?
   accounts      Account[]
   sessions      Session[]
- password    String?
+  password    String?
   role        Role?         @default(USER)
   isGraduated Boolean?      @default(false)
   birthdate   Int?
