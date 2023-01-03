@@ -22,8 +22,8 @@
     "@trpc/next": "^10.0.0",
     "@trpc/react-query": "^10.0.0",
     "@trpc/server": "^10.0.0",
-    "argon2": "^0.30.2",
     "aws-sdk": "^2.1284.0",
+    "bcrypt": "^5.1.0",
     "flowbite": "^1.5.5",
     "flowbite-react": "^0.3.7",
     "framer-motion": "^6",
@@ -39,6 +39,7 @@
     "zod": "^3.18.0"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
     "@types/node": "^18.0.0",
     "@types/nodemailer": "^6.4.7",
     "@types/react": "^18.0.14",
