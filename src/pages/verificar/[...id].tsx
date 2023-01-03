@@ -36,3 +36,4 @@ const verify = () => {
 
     )
 }
+export default verify
