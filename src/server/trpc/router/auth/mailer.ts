@@ -8,9 +8,9 @@ export const mailer=async(email:string,hash:string,path:string,textLink:string)=
     // create reusable transporter object using the default SMTP transport
     const transporter = nodemailer.createTransport({
         // host: "smtp.ethereal.email",
-        service:'Gmail',
-        port: 587,
-        secure: false, // true for 465, false for other ports
+        service:'Zoho',
+        port: 465,
+        secure: true, // true for 465, false for other ports
         auth: {
             user: user, // generated ethereal user
             pass: pass, // generated ethereal password
@@ -20,7 +20,7 @@ export const mailer=async(email:string,hash:string,path:string,textLink:string)=
     
     
     const info = await transporter.sendMail({
-        from: 'noreplyunap@gmail.com', // sender address
+        from: user, // sender address
         to: email, // list of receivers
         subject: "Confirmacion de correo", // Subject line
         text: "Hola", // plain text body
