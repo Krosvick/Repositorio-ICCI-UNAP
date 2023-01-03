@@ -9,7 +9,6 @@ declare module "next-auth" {
     user?: {
       id: string;
       role: USER | ADMIN | null;
-      institutionalEmail: string | null | undefined;
       emVerified: boolean | null | undefined;
     } & DefaultSession["user"];
   }
