@@ -8,6 +8,9 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Mailform from '../components/shared/mailform';
 import Message from '../components/shared/confirmation';
+import { unstable_getServerSession } from 'next-auth';
+import { CreateNextContextOptions } from '@trpc/server/adapters/next';
+import { authOptions } from "./api/auth/[...nextauth]";
 
 
 export const mailSchema = z.object({
@@ -48,6 +51,27 @@ const emailverification: NextPage = () => {
             )}
         </div>
     ) 
+}
+
+export async function getServerSideProps(context: CreateNextContextOptions) {
+    const session = await unstable_getServerSession(
+        context.req,
+        context.res,
+        authOptions
+    );
+    if(session?.user?.emVerified == true){
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false,
+            },
+        }
+    }
+    return {
+        props: {
+            session,
+        },
+    };
 }
 
 export default emailverification
