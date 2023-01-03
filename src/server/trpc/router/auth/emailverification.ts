@@ -1,24 +1,22 @@
 import { z } from "zod";
-import { router, publicProcedure } from "../../trpc";
+import { router, publicProcedure, protectedProcedure } from "../../trpc";
 import { mailer } from "./mailer";
 import bcrypt from "bcrypt";
 
 export const verifyEmailRouter = router({
-    sendEmail: publicProcedure.input(z.object({
+    sendEmail: protectedProcedure.input(z.object({
         //email from @estudiantesunap.cl regex
         email: z.string().regex(/^[a-zA-Z0-9._-]+@estudiantesunap.cl$/),
     })).mutation(async ({input,ctx}) => {
-        const registered = await ctx.prisma.user.findFirst({
+        const id = ctx.session.user.id;
+        const registered = await ctx.prisma.user.update({
             where: {
+                id: id,
+            },
+            data: {
                 institutionalEmail: input.email,
             }
         });
-        if(!registered){
-            throw new Error("Email no registrado");
-        }
-        if (registered.IEVerified==true) {
-            throw new Error("Email ya verificado");
-        }
         console.log(registered);
         let info;
         await bcrypt.hash(registered.id, 10).then(async function(hash){
