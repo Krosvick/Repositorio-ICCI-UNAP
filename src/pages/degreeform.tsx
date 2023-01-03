@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import { trpc } from "../utils/trpc";
-import { TextInput, Label, Select, Button, FileInput } from "flowbite-react";
+import { TextInput, Label, Select, Button, FileInput, Textarea } from "flowbite-react";
 import {z} from "zod";
 import {SubmitHandler, useForm} from "react-hook-form";
 import { DegreeWorkType } from "@prisma/client";
@@ -19,7 +19,6 @@ export const degreeformSchema = z.object({
         authors: z.string().max(100),
         advisors: z.string().max(100),
         year: z.number().min(1900).max(2100),
-        //file will be a pdf file stored as a blob
         file: z.any(),
     })
 
@@ -56,12 +55,12 @@ const degreeform: NextPage = () => {
     return (
         //this will be a form to post a degree work in the middle of the page
         //style with tailwind
-        <div className="flex flex-col justify-center items-center h-[calc(100vh-6rem)] my-32">
-            <div className="flex items-center">
-                <h1 className="text-2xl font-poppins mb-4">Post your degree work</h1>
+        <div className="flex flex-col justify-center items-center h-[calc(100vh-6rem)] overflow-auto">
+            <div className="flex items-center pt-4">
+                <h1 className="text-2xl font-poppins mb-4">Publica tu trabajo</h1>
             </div>
-            <div className="flex flex-col items-center w-3/12">
-                <form className="flex flex-col gap-4 w-full" onSubmit={handleSubmit(onSubmit)}>
+            <div className="flex flex-col items-center w-full h-auto overflow-auto">
+                <form className="flex flex-col gap-4 w-4/12" onSubmit={handleSubmit(onSubmit)}>
                     <div>
                         <div className="mb-2 block">
                             <Label
@@ -84,11 +83,10 @@ const degreeform: NextPage = () => {
                             value="Descripción"
                             />
                         </div>
-                        <TextInput
+                        <Textarea
                         id="description"
-                        type="text"
                         required={true}
-                        sizing="lg"
+                        placeholder="Ingrese una descripción"
                         {...register("description")}
                         />
                     </div>
