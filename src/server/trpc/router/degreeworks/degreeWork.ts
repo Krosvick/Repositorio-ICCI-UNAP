@@ -51,4 +51,18 @@ export const degreeWorkRouter = router({
         );
         })
     }),
+    listWorks: publicProcedure.input(z.object({
+      //prisma offset pagination
+      skip: z.number().optional(),
+      take: z.number().optional()
+    })).query(async ({input,ctx}) => {
+      const {skip, take} = input;
+      const works = await ctx.prisma.degreeWorks.findMany({
+        skip,
+        take,
+      }
+      );
+      return works;
+    }),
+
 });
