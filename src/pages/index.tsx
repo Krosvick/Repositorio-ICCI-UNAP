@@ -5,9 +5,12 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
 import { trpc } from "../utils/trpc";
+import DegreeWorks from "../components/workcard";
+import { Button } from "flowbite-react";
 
 const Home: NextPage = () => {
   const { data: sessionData } = useSession();
+  console.log(sessionData);
   const router = useRouter();
   const handleClick = () => {
     if (!sessionData?.user?.emVerified) {
@@ -24,14 +27,12 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="flex justify-center items-center h-[calc(100vh-6rem)]"> 
-        {sessionData && (
-          <div className="flex flex-col items-center">
-            <h1 className="text-2xl font-poppins mb-4">Bienvenido {sessionData.user?.name}</h1>
-            <button type="button" className="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900" onClick={handleClick}>
-                Post degreework
-            </button>
-          </div>
-        )}
+        <DegreeWorks/>
+        <Button>
+          <Link href="/degreeform">
+            Publica tu trabajo
+          </Link>
+          </Button>
       </div>
     </>
   );
