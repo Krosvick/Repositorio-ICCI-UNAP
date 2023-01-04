@@ -59,7 +59,7 @@ const degreeform: NextPage = () => {
             <div className="flex items-center pt-4">
                 <h1 className="text-2xl font-poppins mb-4">Publica tu trabajo</h1>
             </div>
-            <div className="flex flex-col items-center w-full h-auto overflow-auto">
+            <div className="flex flex-col items-center w-full h-auto overflow-auto mb-2">
                 <form className="flex flex-col gap-4 w-4/12" onSubmit={handleSubmit(onSubmit)}>
                     <div>
                         <div className="mb-2 block">
