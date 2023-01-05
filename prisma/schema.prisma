@@ -101,8 +101,8 @@ model Tag {
 
 model DegreeWorks {
   id          String         @id @default(uuid()) 
-  title       String
-  description String
+  title       String         @db.VarChar(255)
+  description String         @db.Text
   file        String?
   authors     String
   advisors     String
