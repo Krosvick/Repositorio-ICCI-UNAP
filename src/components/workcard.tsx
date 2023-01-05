@@ -4,6 +4,8 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Document, Page, pdfjs } from "react-pdf";
+import { useSession } from 'next-auth/react';
+
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/legacy/build/pdf.worker.min.js`;
 
@@ -33,11 +35,17 @@ const WorkCard = ({work}: {work:RouterOutputs["degreeWork"]["listWorks"][number]
 
 
 const DegreeWorks = () => {
+    const { data: sessionData } = useSession();
     const [take, setTake] = useState(7);
     const [skip, setSkip] = useState(0);
+    const [isAdmin, setIsAdmin] = useState(false);
+    if (sessionData?.user?.role === "admin") {
+        setIsAdmin(true);
+    }
     const {data, status, isPreviousData} = trpc.degreeWork.listWorks.useQuery({
         take,
         skip,
+        isAdmin
     },{keepPreviousData: true});
     console.log(data);
     const currentPage = skip/7+1;
@@ -66,3 +74,4 @@ const DegreeWorks = () => {
     );
 }
 export default DegreeWorks;
+
