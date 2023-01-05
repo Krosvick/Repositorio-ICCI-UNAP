@@ -17,7 +17,7 @@ const Navbar: FC<NavbarProps> = ({}) => {
     <nav className="bg-white border-gray-200 px-2 sm:px-4 py-2.5 rounded dark:bg-gray-900 drop-shadow-2xl">
       <div className="container flex flex-wrap items-center justify-between mx-auto">
       <Link href="/" className='flex items-center'>
-          <img src="https://i.imgur.com/agkobPn.png" className="h-6 mr-3 sm:h-9" alt="Unap Logo" />
+          <Image src="https://i.imgur.com/agkobPn.png" width={35} height={80} quality={55} className="h-6 mr-3 sm:h-9" alt="Unap Logo" />
           <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Repositorio</span>
       </Link>
       {!sessionData && (
