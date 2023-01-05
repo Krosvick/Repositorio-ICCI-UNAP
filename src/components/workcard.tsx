@@ -3,6 +3,9 @@ import {Card, Pagination} from "flowbite-react"
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Document, Page, pdfjs } from "react-pdf";
+
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/legacy/build/pdf.worker.min.js`;
 
 const WorkCard = ({work}: {work:RouterOutputs["degreeWork"]["listWorks"][number]}) => {
     return (
@@ -12,12 +15,14 @@ const WorkCard = ({work}: {work:RouterOutputs["degreeWork"]["listWorks"][number]
                     <div className='flex flex-col items-start w-4/5'>
                         <p className='font-poppins font-medium'>{work.title}</p>
                         <p className='font-poppins font-thin text-sm'>Autores: {work.authors}</p>
-                        <p className='font-poppins font-light'>{work.description.length > 100 ?
-                        `${work.description.substring(0, 100)}...` : work.description
+                        <p className='font-poppins font-light text-justify'>{work.description.length > 200 ?
+                        `${work.description.substring(0, 200)}...` : work.description
                     }</p>
                     </div>
                     <div className='w-1/5'>
-                        <Image className="outline outline-gray-600 outline-1" src="/../public/imagentit.png" alt="imagen de portada" width={100} height={100}/>
+                        <Document file={work.file}>
+                            <Page pageNumber={1} renderMode="canvas" scale={0.18} renderAnnotationLayer={false} renderTextLayer={false}/>
+                        </Document>
                     </div>
                 </div>
             </Card>
