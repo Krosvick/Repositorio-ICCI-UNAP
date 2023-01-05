@@ -6,11 +6,10 @@ import Link from 'next/link'
 import Image from 'next/image'
 import {Dropdown, Avatar} from "flowbite-react"
 
-interface NavbarProps {}
 
 
 
-const Navbar: FC<NavbarProps> = ({}) => {
+const Navbar = ()=> {
   const { data: sessionData } = useSession()
 
   return (

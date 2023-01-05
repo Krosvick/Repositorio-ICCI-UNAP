@@ -8,7 +8,7 @@ const s3 = new AWS.S3();
 export const degreeWorkRouter = router({
     publish: protectedProcedure.input(degreeformSchema)
     .mutation(async ({input,ctx}) => {
-        let file:any = input.file;
+        const file:any = input.file;
         const {title, description, type, authors, advisors, year} = input;
         const degreeWork = await ctx.prisma.degreeWorks.create({
             data: {
