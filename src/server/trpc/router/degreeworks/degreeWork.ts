@@ -60,6 +60,11 @@ export const degreeWorkRouter = router({
       const works = await ctx.prisma.degreeWorks.findMany({
         skip,
         take,
+        where : {
+          admisionDate: {
+            not: null
+          }
+        },
       }
       );
       return works;
