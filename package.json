@@ -22,6 +22,7 @@
     "@trpc/next": "^10.0.0",
     "@trpc/react-query": "^10.0.0",
     "@trpc/server": "^10.0.0",
+    "@types/react-pdf": "^6.2.0",
     "aws-sdk": "^2.1284.0",
     "bcrypt": "^5.1.0",
     "flowbite": "^1.5.5",
@@ -35,6 +36,7 @@
     "react-dom": "18.2.0",
     "react-hook-form": "^7.41.1",
     "react-icons": "^4.7.1",
+    "react-pdf": "^6.2.1",
     "superjson": "1.9.1",
     "zod": "^3.18.0"
   },
