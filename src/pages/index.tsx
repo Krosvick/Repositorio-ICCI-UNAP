@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 
 import { trpc } from "../utils/trpc";
 import DegreeWorks from "../components/workcard";
-import { Button } from "flowbite-react";
+import { Button, Card } from "flowbite-react";
 
 const Home: NextPage = () => {
   const { data: sessionData } = useSession();
@@ -27,12 +27,26 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="flex justify-center items-center h-[calc(100vh-6rem)]"> 
-        <DegreeWorks/>
-        <Button>
-          <Link href="/degreeform">
-            Publica tu trabajo
-          </Link>
-          </Button>
+        <div className="w-1/5 flex justify-center items-center">
+          en proceso
+        </div>
+        <div className="w-3/5 h-full">
+          <div className="place-self-start">
+            <DegreeWorks/>
+          </div>
+        </div>
+        <div className="w-1/5 h-full max-w-xs flex">
+          <Card className="flex w-3/4 h-1/4 max-w-xs max-h-20 justify-center items-center mt-10 bg-gray-100">
+            <Button
+              outline={true}
+              gradientDuoTone="cyanToBlue"
+            >
+              <Link className="font-poppins" href="/degreeform">
+                Publica tu trabajo
+              </Link>
+            </Button>
+          </Card>
+        </div>
       </div>
     </>
   );
