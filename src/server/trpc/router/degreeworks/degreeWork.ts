@@ -23,8 +23,17 @@ export const degreeWorkRouter = router({
         });
         return degreeWork;
     }),
-    getDegreeWorks: publicProcedure.query(async ({ctx}) => {
-        const degreeWorks = await ctx.prisma.degreeWorks.findMany();
+    getDegreeWorks: protectedProcedure.input(z.object({
+        //prisma offset pagination
+        skip: z.number(),
+        take: z.number(), 
+    })).query
+    (async ({input,ctx}) => {
+        const {skip, take} = input;
+        const degreeWorks = await ctx.prisma.degreeWorks.findMany({
+            skip,
+            take,
+        });
         return degreeWorks;
     }),
     getSignedUrl: protectedProcedure.input(z.object({
@@ -54,20 +63,28 @@ export const degreeWorkRouter = router({
     listWorks: publicProcedure.input(z.object({
       //prisma offset pagination
       skip: z.number().optional(),
-      take: z.number().optional()
+      take: z.number().optional(),
+      isAdmin: z.boolean().optional().default(false),
     })).query(async ({input,ctx}) => {
-      const {skip, take} = input;
-      const works = await ctx.prisma.degreeWorks.findMany({
-        skip,
-        take,
-        where : {
-          admisionDate: {
-            not: null
+      const {skip, take,isAdmin} = input;
+      if(isAdmin){
+        const works = await ctx.prisma.degreeWorks.findMany({
+          skip,
+          take,
+        });
+        return works;
+      }else {
+        const works = await ctx.prisma.degreeWorks.findMany({
+          skip,
+          take,
+          where: {
+            admisionDate: {
+              not: null
           }
-        },
+          }
+        });
+        return works;
       }
-      );
-      return works;
     }),
     getOne:publicProcedure.input(z.object({
       id: z.string()
