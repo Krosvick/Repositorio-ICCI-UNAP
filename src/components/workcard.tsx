@@ -1,15 +1,27 @@
 import {RouterOutputs, trpc} from '../utils/trpc';
 import {Card, Pagination} from "flowbite-react"
 import { useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
 
 const WorkCard = ({work}: {work:RouterOutputs["degreeWork"]["listWorks"][number]}) => {
     return (
-        <Card className="w-5/12 h-auto mb-2 rounded-none">
-            <div className='flex flex-col items-center'>
-                <p className='font-poppins'>{work.title}</p>
-
-            </div>
-        </Card>
+        <Link href="/trabajos/[id]" as={`/trabajos/${work.id}`} className="w-10/12 h-auto">
+            <Card className="flex mb-2 rounded-none transform-gpu transition ease-in delay 100 hover:bg-gray-100">
+                <div className='flex flex-row'>
+                    <div className='flex flex-col items-start w-4/5'>
+                        <p className='font-poppins font-medium'>{work.title}</p>
+                        <p className='font-poppins font-thin text-sm'>Autores: {work.authors}</p>
+                        <p className='font-poppins font-light'>{work.description.length > 100 ?
+                        `${work.description.substring(0, 100)}...` : work.description
+                    }</p>
+                    </div>
+                    <div className='w-1/5'>
+                        <Image className="outline outline-gray-600 outline-1" src="/../public/imagentit.png" alt="imagen de portada" width={100} height={100}/>
+                    </div>
+                </div>
+            </Card>
+        </Link>
     );
 }
 
