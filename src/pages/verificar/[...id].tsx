@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { Card } from "flowbite-react";
 
 
-const verify = () => {
+const Verify = () => {
     const router = useRouter();
     const id = router.query.id;
     const verify = trpc.verification.verify.useMutation();
@@ -36,4 +36,4 @@ const verify = () => {
 
     )
 }
-export default verify
+export default Verify

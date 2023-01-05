@@ -24,7 +24,7 @@ export const degreeformSchema = z.object({
 
 type degreeformSchema = z.infer<typeof degreeformSchema>;
 
-const degreeform: NextPage = () => {
+const Degreeform: NextPage = () => {
     const utils = trpc.useContext();
     const {data: sessionData} = useSession();
     const {mutateAsync: addDegreeWork} = trpc.degreeWork.publish.useMutation();
@@ -185,7 +185,7 @@ const degreeform: NextPage = () => {
             </div>
     )
 }
-export default degreeform;
+export default Degreeform;
 
 export async function getServerSideProps(context: CreateNextContextOptions) {
     const session = await unstable_getServerSession(

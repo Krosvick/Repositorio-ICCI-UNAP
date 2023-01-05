@@ -9,7 +9,7 @@ import { Document, Page, pdfjs } from "react-pdf";
 import Link from "next/link";
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/legacy/build/pdf.worker.min.js`;
 
-const detalle: NextPage = () => {
+const Detalle: NextPage = () => {
 
     const router = useRouter();
     const [numPages, setNumPages] = useState(0);
@@ -82,4 +82,4 @@ const detalle: NextPage = () => {
     )
 }
 
-export default detalle
+export default Detalle

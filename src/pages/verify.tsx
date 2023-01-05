@@ -20,7 +20,7 @@ export type emailSchema = z.infer<typeof mailSchema>;
 
 
 
-const emailverification: NextPage = () => {
+const Emailverification: NextPage = () => {
     const sendEmail = trpc.verification.sendEmail.useMutation();
     const [email, setEmail] = useState("");
     const [error, setError] = useState("");
@@ -74,4 +74,4 @@ export async function getServerSideProps(context: CreateNextContextOptions) {
     };
 }
 
-export default emailverification
+export default Emailverification
