@@ -64,5 +64,18 @@ export const degreeWorkRouter = router({
       );
       return works;
     }),
+    getOne:publicProcedure.input(z.object({
+      id: z.string()
+    })).query(async ({input,ctx}) => {
+      const {id} = input;
+      const work = await ctx.prisma.degreeWorks.findUnique({
+        where: {
+          id,
+        }
+      });
+      return work;
+    }
+    ),
+
 
 });
