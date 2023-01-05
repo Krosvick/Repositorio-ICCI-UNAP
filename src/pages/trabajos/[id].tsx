@@ -12,7 +12,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/l
 const detalle: NextPage = () => {
 
     const router = useRouter();
-    const [numPages, setNumPages] = useState(null);
+    const [numPages, setNumPages] = useState(0);
     const [pageNumber, setPageNumber] = useState(1);
     function onDocumentLoadSuccess({ numPages }:any) {
         setNumPages(numPages);
