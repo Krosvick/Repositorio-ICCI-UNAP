@@ -13,7 +13,7 @@ import { CreateNextContextOptions } from "@trpc/server/adapters/next";
 
 export const degreeformSchema = z.object({
         title: z.string().max(255),
-        description: z.string().max(500),
+        description: z.string().max(3000),
         //type is an enum in prisma
         type: z.enum([DegreeWorkType.THESIS, DegreeWorkType.ARTICLE]),
         authors: z.string().max(100),
