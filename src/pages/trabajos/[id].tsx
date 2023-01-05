@@ -7,10 +7,10 @@ import Image from "next/image";
 import { useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import Link from "next/link";
-
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/legacy/build/pdf.worker.min.js`;
 
 const detalle: NextPage = () => {
+
     const router = useRouter();
     const [numPages, setNumPages] = useState(null);
     const [pageNumber, setPageNumber] = useState(1);
@@ -44,7 +44,7 @@ const detalle: NextPage = () => {
                             <Page pageNumber={1} renderMode="canvas" scale={0.2} renderAnnotationLayer={false} renderTextLayer={false}/>
                         </Document>
                         <Button>
-                            <a href={data.file} download="test.pdf">
+                            <a href={data.file as string} download="test.pdf">
                                 Descargar PDF
                             </a>
                         </Button>

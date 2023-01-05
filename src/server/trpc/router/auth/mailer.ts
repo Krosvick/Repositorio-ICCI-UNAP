@@ -1,7 +1,7 @@
 import nodemailer from 'nodemailer';
 
-const user = process.env.EMAIL_USER;
-const pass = process.env.EMAIL_PASS; 
+const user = process.env.EMAIL_USER_VERCEL;
+const pass = process.env.EMAIL_PASS_VERCEL; 
 export const mailer=async(email:string,hash:string,path:string,textLink:string)=>{
 
     

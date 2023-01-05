@@ -3,7 +3,6 @@ import Head from "next/head";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-
 import { trpc } from "../utils/trpc";
 import DegreeWorks from "../components/workcard";
 import { Button, Card } from "flowbite-react";
@@ -53,4 +52,5 @@ const Home: NextPage = () => {
 };
 
 export default Home;
+
 
