@@ -30,8 +30,8 @@ const Home: NextPage = () => {
         <div className="w-1/5 flex justify-center items-center">
           en proceso
         </div>
-        <div className="w-3/5 h-full">
-          <div className="place-self-start">
+        <div className="w-4/6 h-full mr-10 overflow-auto">
+          <div className="place-self-start" >
             <DegreeWorks/>
           </div>
         </div>
