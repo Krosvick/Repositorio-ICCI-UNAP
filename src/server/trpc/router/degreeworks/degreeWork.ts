@@ -1,7 +1,8 @@
-import {z} from "zod";
+import {date, z} from "zod";
 import { degreeformSchema } from "../../../../pages/degreeform";
 import { router,publicProcedure, protectedProcedure } from "../../trpc";
 import {AWS} from "../../../../libs/aws";
+import { degreeFormAdminSchema } from "../../../../pages/edit/[id]";
 
 const s3 = new AWS.S3();
 
@@ -51,7 +52,7 @@ export const degreeWorkRouter = router({
               ['content-length-range', 0, 100000000],
             ],
             Expires: 30,
-            Bucket: process.env.AWS_S3_BUCKET_NAME, 
+            Bucket: process.env.AWS_S3_BUCKET_VERCEL, 
           },
           (err, signed) => {
             if (err) return reject(err);
@@ -71,6 +72,10 @@ export const degreeWorkRouter = router({
         const works = await ctx.prisma.degreeWorks.findMany({
           skip,
           take,
+          where: {
+            //deleteat is null
+            deletedAt: null
+          }
         });
         return works;
       }else {
@@ -80,7 +85,8 @@ export const degreeWorkRouter = router({
           where: {
             admisionDate: {
               not: null
-          }
+          },
+          deletedAt: null
           }
         });
         return works;
@@ -98,6 +104,51 @@ export const degreeWorkRouter = router({
       return work;
     }
     ),
-
-
+    update: protectedProcedure.input(z.object({
+      id: z.string(),
+      data: degreeFormAdminSchema
+    })).mutation(async ({input,ctx}) => {
+      const {id, data} = input;
+      const {title, description, type, authors, advisors, year, admissionDate, file, deletedAt} = data;
+      const work = await ctx.prisma.degreeWorks.update({
+        where: {
+          id,
+        },
+        data: {
+          title,
+          description,
+          type,
+          authors,
+          advisors,
+          year,
+          admisionDate: admissionDate,
+          file,
+          deletedAt,
+        }
+      });
+      return work;
+    }),
+    deleteOne: protectedProcedure.input(z.object({
+      id: z.string()
+    })).mutation(async ({input,ctx}) => {
+      const {id} = input;
+      const work = await ctx.prisma.degreeWorks.update({
+        where: {
+          id,
+        },
+        data: {
+          deletedAt: new Date()
+        }
+      });
+      return work;
+    }),
+    count: publicProcedure
+    .query(async ({ctx}) => {
+      const count = await ctx.prisma.degreeWorks.count({
+        where: {
+          deletedAt: null
+        }
+      });
+      return count;
+    }),
 });

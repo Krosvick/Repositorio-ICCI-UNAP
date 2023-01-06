@@ -9,6 +9,7 @@ import {useSession} from "next-auth/react"
 import { unstable_getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]";
 import { CreateNextContextOptions } from "@trpc/server/adapters/next";
+import { useRouter } from "next/router";
 
 
 export const degreeformSchema = z.object({
@@ -26,6 +27,7 @@ type degreeformSchema = z.infer<typeof degreeformSchema>;
 
 const Degreeform: NextPage = () => {
     const utils = trpc.useContext();
+    const router = useRouter();
     const {data: sessionData} = useSession();
     const {mutateAsync: addDegreeWork} = trpc.degreeWork.publish.useMutation();
     const {mutateAsync: createSignedUrl} = trpc.degreeWork.getSignedUrl.useMutation();
@@ -50,6 +52,7 @@ const Degreeform: NextPage = () => {
         });
         data.file = url + "/" + data.file[0].name;
         await addDegreeWork(data);
+        router.push("/");
     }
     
     return (
@@ -173,6 +176,7 @@ const Degreeform: NextPage = () => {
                         <FileInput
                             id="file"
                             helperText="Solo se permiten archivos pdf"
+                            required={true}
                             {...register("file")}
                         />
                     </div>
@@ -193,7 +197,6 @@ export async function getServerSideProps(context: CreateNextContextOptions) {
         context.res,
         authOptions
     );
-    console.log(session);
     if(!session) {
         return {
             redirect: {
