@@ -1,7 +1,7 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { trpc } from "../utils/trpc";
 import DegreeWorks from "../components/workcard";
@@ -27,7 +27,7 @@ const Home: NextPage = () => {
       </Head>
       <div className="flex justify-center items-center h-[calc(100vh-6rem)]"> 
         <div className="w-1/5 flex justify-center items-center">
-          en proceso
+          wena profe como estamo
         </div>
         <div className="w-4/6 h-full mr-10 overflow-auto">
           <div className="place-self-start" >
@@ -39,6 +39,7 @@ const Home: NextPage = () => {
             <Button
               outline={true}
               gradientDuoTone="cyanToBlue"
+              onClick={!sessionData ? () => signIn('google') : handleClick}
             >
               <Link className="font-poppins" href="/degreeform">
                 Publica tu trabajo
