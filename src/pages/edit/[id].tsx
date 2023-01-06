@@ -45,7 +45,7 @@ const EditWork:NextPage = () => {
         if (file === false) {
             datas.file = data?.file
         }else{
-            const {url, fields}: {url: string, fields: any} = await createSignedUrl({fileName: datas.file[0].name}) as any;
+            const {url, fields}: {url: string, fields: any} = await createSignedUrl({fileName: datas.file[0].name,dataType: datas.file[0].type}) as any;
             const datasx = {
                 ...fields,
                 'Content-Type': datas.file[0].type,

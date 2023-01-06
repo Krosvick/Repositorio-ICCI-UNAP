@@ -39,27 +39,31 @@ export const degreeWorkRouter = router({
     }),
     getSignedUrl: protectedProcedure.input(z.object({
         fileName: z.string(),
+        dataType: z.string(),
     })).mutation(async ({input,ctx}) => {
-        
-        return new Promise((resolve, reject) => {
-        s3.createPresignedPost(
-          {
-            Fields: {
-              key: input.fileName,
+        if(input.dataType === "application/pdf"){
+          return new Promise((resolve, reject) => {
+          s3.createPresignedPost(
+            {
+              Fields: {
+                key: input.fileName,
+              },
+              Conditions: [
+                ['starts-with', '$Content-Type', ''],
+                ['content-length-range', 0, 100000000],
+              ],
+              Expires: 30,
+              Bucket: process.env.AWS_S3_BUCKET_VERCEL, 
             },
-            Conditions: [
-              ['starts-with', '$Content-Type', ''],
-              ['content-length-range', 0, 100000000],
-            ],
-            Expires: 30,
-            Bucket: process.env.AWS_S3_BUCKET_VERCEL, 
-          },
-          (err, signed) => {
-            if (err) return reject(err);
-            resolve(signed);
-          }
-        );
-        })
+            (err, signed) => {
+              if (err) return reject(err);
+              resolve(signed);
+            }
+          );
+          })
+        }else{
+          return {message: "Error al subir archivo, el archivo debe ser un pdf"};
+        } 
     }),
     listWorks: publicProcedure.input(z.object({
       //prisma offset pagination

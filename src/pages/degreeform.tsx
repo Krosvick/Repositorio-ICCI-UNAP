@@ -36,7 +36,7 @@ const Degreeform: NextPage = () => {
         resolver: zodResolver(degreeformSchema),
     });
     const onSubmit: SubmitHandler<degreeformSchema> = async (data) => {
-        const {url, fields}: {url: string, fields: any} = await createSignedUrl({fileName: data.file[0].name}) as any;
+        const {url, fields}: {url: string, fields: any} = await createSignedUrl({fileName: data.file[0].name, dataType: data.file[0].type}) as any;
         const datas = {
             ...fields,
             'Content-Type': data.file[0].type,
@@ -64,7 +64,7 @@ const Degreeform: NextPage = () => {
             </div>
             <div className="flex flex-col items-center w-full h-auto overflow-auto mb-2">
                 <form className="flex flex-col gap-4 w-4/12" onSubmit={handleSubmit(onSubmit)}>
-                    <div>
+                    <div> 
                         <div className="mb-2 block">
                             <Label
                             htmlFor="title"
