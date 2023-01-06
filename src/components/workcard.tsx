@@ -62,16 +62,15 @@ const DegreeWorks = () => {
     },{keepPreviousData: true});
     const currentPage = skip/7 + 1;
     const totalPages = (() : number => {
-        if (count && data) {
-            if (data?.length < 7) {
-                return 1;
+        if(count && data)
+          if(data.length < take){
+            return currentPage;
+          }
+            else{
+                return Math.ceil(count/take);
             }
-            else {
-                return Math.floor(count/7) + 1;
-            }
-        }
-        return 0
-        })();
+        return 0;   
+    })();
         console.log("pg totales:" + totalPages)
     return (
         <div className="flex flex-col justify-start items-center w-full h-full overflow-auto mb-2 pt-10">
