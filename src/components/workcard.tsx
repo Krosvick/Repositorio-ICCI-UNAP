@@ -1,5 +1,5 @@
 import {RouterOutputs, trpc} from '../utils/trpc';
-import {Button, Card, Pagination} from "flowbite-react"
+import {Button, Card, Pagination, Spinner} from "flowbite-react"
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -55,7 +55,7 @@ const DegreeWorks = () => {
     const {data:count} = trpc.degreeWork.count.useQuery();
     //wait for sessionData to be loaded
     //prevent this Error: Too many re-renders. React limits the number of renders to prevent an infinite loop.
-    const {data, status, isPreviousData} = trpc.degreeWork.listWorks.useQuery({
+    const {data, status, isPreviousData, isLoading} = trpc.degreeWork.listWorks.useQuery({
         take,
         skip,
         isAdmin: sessionData?.user?.role === "ADMIN" ? true : false
@@ -78,6 +78,7 @@ const DegreeWorks = () => {
             {data?.map((work) => (
                 <WorkCard key={work.id} work={work}/>
             ))}
+            {isLoading && <Spinner aria-label="Extra large spinner example "size="xl"/>}
             {totalPages > 1 &&
                 <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={(page) => {
                     setSkip((page-1)*7);
