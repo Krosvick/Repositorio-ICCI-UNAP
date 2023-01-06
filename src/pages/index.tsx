@@ -27,7 +27,6 @@ const Home: NextPage = () => {
       </Head>
       <div className="flex justify-center items-center h-[calc(100vh-6rem)]"> 
         <div className="w-1/5 flex justify-center items-center">
-          wena profe como estamo
         </div>
         <div className="w-4/6 h-full mr-10 overflow-auto">
           <div className="place-self-start" >
