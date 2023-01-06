@@ -177,6 +177,7 @@ const Degreeform: NextPage = () => {
                             id="file"
                             helperText="Solo se permiten archivos pdf"
                             required={true}
+                            accept=".pdf"
                             {...register("file")}
                         />
                     </div>
