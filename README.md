@@ -2,7 +2,7 @@
 ##### _Ingeniería Civil en Computación e Informática_
 ##### _Universidad Arturo Prat_
 
-This project is a repository for my college degree work. It uses a variety of technologies, including Next.js, AWS S3, Planetscale, and Prisma, to create a functional web application.
+This is a project created with the intention of being used as a repository for the degree works of the students of my career. It uses a variety of technologies, including Next.js, AWS S3, Planetscale, and Prisma, to create a functional web application.
 
 The goals of this project are to demonstrate my understanding of modern web development technologies and practices, and to create a useful tool for my college community.
 
