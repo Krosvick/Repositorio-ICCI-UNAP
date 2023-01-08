@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Document, Page, pdfjs } from "react-pdf";
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
 
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/legacy/build/pdf.worker.min.js`;
@@ -49,6 +50,7 @@ const WorkCard = ({work}: {work:RouterOutputs["degreeWork"]["listWorks"][number]
 
 
 const DegreeWorks = () => {
+    const router = useRouter();
     const { data: sessionData } = useSession();
     const [take, setTake] = useState(7);
     const [skip, setSkip] = useState(0);
@@ -57,10 +59,10 @@ const DegreeWorks = () => {
     //prevent this Error: Too many re-renders. React limits the number of renders to prevent an infinite loop.
     const {data, status, isPreviousData, isLoading} = trpc.degreeWork.listWorks.useQuery({
         take,
-        skip,
+        skip: router.query.page ? (parseInt(router.query.page as string)-1)*7 : 0,
         isAdmin: sessionData?.user?.role === "ADMIN" ? true : false
     },{keepPreviousData: true});
-    const currentPage = skip/7 + 1;
+    const currentPage = router.query.page ? parseInt(router.query.page as string) : 1;
     const totalPages = (() : number => {
         if(count && data)
           if(data.length < take){
@@ -80,6 +82,7 @@ const DegreeWorks = () => {
             {totalPages > 1 &&
                 <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={(page) => {
                     setSkip((page-1)*7);
+                    router.push(`/?page=${page}`);
                 }
                 }/>
             }
