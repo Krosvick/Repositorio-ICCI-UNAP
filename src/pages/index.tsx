@@ -9,7 +9,6 @@ import { Button, Card } from "flowbite-react";
 
 const Home: NextPage = () => {
   const { data: sessionData } = useSession();
-  console.log(sessionData);
   const router = useRouter();
   const handleClick = () => {
     if (!sessionData?.user?.emVerified) {

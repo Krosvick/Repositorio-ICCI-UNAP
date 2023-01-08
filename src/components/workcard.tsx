@@ -71,7 +71,6 @@ const DegreeWorks = () => {
             }
         return 0;   
     })();
-        console.log("pg totales:" + totalPages)
     return (
         <div className="flex flex-col justify-start items-center w-full h-full overflow-auto mb-2 pt-10">
             {data?.map((work) => (
