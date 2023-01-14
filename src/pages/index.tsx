@@ -3,7 +3,6 @@ import Head from "next/head";
 import Link from "next/link";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { trpc } from "../utils/trpc";
 import DegreeWorks from "../components/workcard";
 import { Button, Card } from "flowbite-react";
 
@@ -28,7 +27,7 @@ const Home: NextPage = () => {
         <div className="w-1/5 flex justify-center items-center">
         </div>
         <div className="w-4/6 h-full mr-10 overflow-auto">
-          <div className="place-self-start" >
+          <div className="place-self-start">
             <DegreeWorks/>
           </div>
         </div>
