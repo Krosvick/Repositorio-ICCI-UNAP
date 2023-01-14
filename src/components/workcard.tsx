@@ -60,7 +60,7 @@ const DegreeWorks = () => {
     //prevent this Error: Too many re-renders. React limits the number of renders to prevent an infinite loop.
     const {data, status, isPreviousData, isLoading, isSuccess} = trpc.degreeWork.listWorks.useQuery({
         take,
-        skip: router.query.page ? (parseInt(router.query.page as string)-1)*7 : 0,
+        skip: router.query.page ? (parseInt(router.query.page as string)-1)*7 : 1,
         isAdmin: sessionData?.user?.role === "ADMIN" ? true : false
     },{keepPreviousData: true});
     const currentPage = router.query.page ? parseInt(router.query.page as string) : 1;
@@ -83,7 +83,7 @@ const DegreeWorks = () => {
         <div className="flex flex-col justify-start items-center w-full h-full mb-2 pt-10 gap-4">
             {isLoading && <Spinner aria-label="Extra large spinner example "size="xl"/>}
             {data?.map((work) => (
-                <WorkCard {...parent} key={work.id} work={work}/>
+                <WorkCard key={work.id} work={work}/>
             ))}
             {totalPages > 1 &&
                 <Pagination currentPage={currentPage} totalPages={totalPages} previousLabel="Anterior" nextLabel='Siguiente' onPageChange={(page) => {
