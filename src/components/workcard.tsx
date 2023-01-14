@@ -1,12 +1,10 @@
 import {RouterOutputs, trpc} from '../utils/trpc';
 import {Button, Card, Pagination, Spinner} from "flowbite-react"
-import { useState } from 'react';
-import Image from 'next/image';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { Document, Page, pdfjs } from "react-pdf";
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
-
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/legacy/build/pdf.worker.min.js`;
 
@@ -55,9 +53,10 @@ const DegreeWorks = () => {
     const [take, setTake] = useState(7);
     const [skip, setSkip] = useState(0);
     const {data:count} = trpc.degreeWork.count.useQuery();
+    const parent = useRef<HTMLDivElement>(null);
     //wait for sessionData to be loaded
     //prevent this Error: Too many re-renders. React limits the number of renders to prevent an infinite loop.
-    const {data, status, isPreviousData, isLoading} = trpc.degreeWork.listWorks.useQuery({
+    const {data, status, isPreviousData, isLoading, isSuccess} = trpc.degreeWork.listWorks.useQuery({
         take,
         skip: router.query.page ? (parseInt(router.query.page as string)-1)*7 : 0,
         isAdmin: sessionData?.user?.role === "ADMIN" ? true : false
@@ -73,6 +72,11 @@ const DegreeWorks = () => {
             }
         return 0;   
     })();
+    //if user tries to access a page that doesn't exist, redirect to last page using isSucces
+    if(isSuccess && currentPage > totalPages){
+        router.push(`/?page=${totalPages}`);
+    }
+    
     return (
         <div className="flex flex-col justify-start items-center w-full h-full overflow-auto mb-2 pt-10">
             {data?.map((work) => (
@@ -80,7 +84,7 @@ const DegreeWorks = () => {
             ))}
             {isLoading && <Spinner aria-label="Extra large spinner example "size="xl"/>}
             {totalPages > 1 &&
-                <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={(page) => {
+                <Pagination currentPage={currentPage} totalPages={totalPages} previousLabel="Anterior" nextLabel='Siguiente' onPageChange={(page) => {
                     setSkip((page-1)*7);
                     router.push(`/?page=${page}`);
                 }
