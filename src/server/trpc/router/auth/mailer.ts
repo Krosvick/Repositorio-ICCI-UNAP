@@ -27,7 +27,7 @@ export const mailer=async(email:string,hash:string,path:string,textLink:string)=
         html: `<div>
         <b>Hola  </b>, 
         <p>este es tu correo de verificación</p>
-        <a target='blanck' href='http://localhost:3000/${path}${hash}'>${textLink}</a>
+        <a target='blanck' href='https://repositorioicciunap.vercel.app/${path}${hash}'>${textLink}</a>
         <p>Si no has solicitado este correo, por favor ignoralo</p>
         <p>Unap repositorio</p>
         </div>`
