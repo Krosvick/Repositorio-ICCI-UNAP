@@ -74,7 +74,7 @@ const DegreeWorks = () => {
             }
         if(count && !data && !isPreviousData){
             return Math.ceil(count/take);
-        };
+        }
         return 0;   
     })();
 //if query oage is less than 1 or is not a number, redirect to page 1
