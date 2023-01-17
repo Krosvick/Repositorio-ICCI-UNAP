@@ -58,7 +58,7 @@ const DegreeWorks = () => {
     const {data:count} = trpc.degreeWork.count.useQuery();
     //wait for sessionData to be loaded
     //prevent this Error: Too many re-renders. React limits the number of renders to prevent an infinite loop.
-    const {data, status, isPreviousData, isLoading, isSuccess} = trpc.degreeWork.listWorks.useQuery({
+    const {data, status, isPreviousData, isLoading, isSuccess, isError} = trpc.degreeWork.listWorks.useQuery({
         take,
         skip: router.query.page ? (parseInt(router.query.page as string)-1)*7 : 1,
         isAdmin: sessionData?.user?.role === "ADMIN" ? true : false
@@ -72,14 +72,28 @@ const DegreeWorks = () => {
             else{
                 return Math.ceil(count/take);
             }
+        if(count && !data && !isPreviousData){
+            return Math.ceil(count/take);
+        };
         return 0;   
     })();
-    //if user tries to access a page that doesn't exist, redirect to last page using isSucces
-    if(isSuccess && currentPage > totalPages){
-        router.push(`/?page=${totalPages}`);
-    }
+//if query oage is less than 1 or is not a number, redirect to page 1
+// also if query page is greater than totalPages, redirect to last page
+    useEffect(() => {
+        if(router.query.page){
+            if(parseInt(router.query.page as string) < 1 || isNaN(parseInt(router.query.page as string))){
+                router.push(`/?page=1`);
+            }
+            if(parseInt(router.query.page as string) > totalPages){
+                router.push(`/?page=${totalPages}`);
+            }
+        }
+    }, [router.query.page, totalPages]);
+    console.log("totalPages", totalPages);
+    console.log("currentPage", currentPage);
+
     
-    return (
+   return (
         <div className="flex flex-col justify-start items-center w-full h-full mb-2 pt-10 gap-4">
             {isLoading && <Spinner aria-label="Extra large spinner example "size="xl"/>}
             {data?.map((work) => (
