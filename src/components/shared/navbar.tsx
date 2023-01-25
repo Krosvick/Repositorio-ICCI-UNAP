@@ -13,7 +13,7 @@ const Navbar = ()=> {
   const { data: sessionData } = useSession()
 
   return (
-    <nav className="bg-white border-gray-200 px-2 sm:px-4 py-2.5 rounded dark:bg-gray-900 drop-shadow-2xl">
+    <nav className="bg-white border-gray-200 px-2 sm:px-4 py-2.5 rounded dark:bg-gray-900 drop-shadow-2xl w-full">
       <div className="container flex flex-wrap items-center justify-between mx-auto">
       <Link href="/" className='flex items-center'>
           <Image src="https://i.imgur.com/agkobPn.png" width={35} height={80} quality={55} className="h-6 mr-3 sm:h-9" alt="Unap Logo" />
